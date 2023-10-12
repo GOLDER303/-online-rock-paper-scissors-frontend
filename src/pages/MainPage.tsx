@@ -1,4 +1,4 @@
-const App = () => {
+const MainPage = () => {
     return (
         <div className="pt-10 h-screen bg-gradient-to-r from-purple-700 to-purple-500 text-neutral-100">
             <h1 className=" text-3xl text-center font-bold drop-shadow-lg">Rock Paper Scissors</h1>
@@ -11,4 +11,4 @@ const App = () => {
     )
 }
 
-export default App
+export default MainPage
