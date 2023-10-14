@@ -3,11 +3,16 @@ import ReactDOM from "react-dom/client"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import MainPage from "./pages/MainPage.tsx"
 import "./style/index.css"
+import GamePage from "./pages/GamePage.tsx"
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <MainPage />,
+    },
+    {
+        path: "/game",
+        element: <GamePage />,
     },
 ])
 
