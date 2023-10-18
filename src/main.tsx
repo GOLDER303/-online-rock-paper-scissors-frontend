@@ -1,9 +1,9 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
+import GamePage from "./pages/GamePage.tsx"
 import MainPage from "./pages/MainPage.tsx"
 import "./style/index.css"
-import GamePage from "./pages/GamePage.tsx"
 
 const router = createBrowserRouter([
     {
@@ -11,7 +11,7 @@ const router = createBrowserRouter([
         element: <MainPage />,
     },
     {
-        path: "/game",
+        path: "/rooms/:roomId",
         element: <GamePage />,
     },
 ])
