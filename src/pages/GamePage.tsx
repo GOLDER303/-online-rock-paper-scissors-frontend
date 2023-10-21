@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { io } from "socket.io-client"
+import { Socket, io } from "socket.io-client"
 import { RoomInfoDTO } from "../dtos/RoomInfo.dto"
 import paperIcon from "../img/icons/paper-icon.svg"
 import rockIcon from "../img/icons/rock-icon.svg"
 import scissorsIcon from "../img/icons/scissors-icon.svg"
+import { PlayerChoice } from "../types/PlayerChoice.type"
 
 const GamePage = () => {
     const { roomId } = useParams()
+
+    const [socket, setSocket] = useState<Socket>()
 
     const [playerId, setPlayerId] = useState<number>()
     const [roomInfo, setRoomInfo] = useState<RoomInfoDTO>()
@@ -16,6 +19,8 @@ const GamePage = () => {
     const [opponentScore, setOpponentScore] = useState<number>(0)
 
     const [isOpponentConnected, setIsOpponentConnected] = useState<boolean>(false)
+
+    const [currentChoice, setCurrentChoice] = useState<PlayerChoice>("NONE")
 
     useEffect(() => {
         const onRoomJoined = (payload: { playerId: number }) => {
@@ -31,21 +36,23 @@ const GamePage = () => {
             console.log(error)
         }
 
-        const socket = io(import.meta.env.VITE_API_URL)
+        const newSocket = io(import.meta.env.VITE_API_URL)
 
-        socket.on("room:joined", onRoomJoined)
-        socket.on("room:update", onRoomUpdate)
-        socket.on("error", onError)
+        newSocket.on("room:joined", onRoomJoined)
+        newSocket.on("room:update", onRoomUpdate)
+        newSocket.on("error", onError)
 
-        socket.emit("room:join", roomId)
+        newSocket.emit("room:join", roomId)
+
+        setSocket(newSocket)
 
         return () => {
-            socket.off("room:joined", onRoomJoined)
-            socket.off("room:update", onRoomUpdate)
-            socket.off("error", onError)
+            newSocket.off("room:joined", onRoomJoined)
+            newSocket.off("room:update", onRoomUpdate)
+            newSocket.off("error", onError)
 
-            socket.emit("room:leave", playerId)
-            socket.disconnect()
+            newSocket.emit("room:leave", playerId)
+            newSocket.disconnect()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -55,10 +62,10 @@ const GamePage = () => {
             return
         }
 
-        const playerScore = roomInfo.players.find((playerInfo) => playerInfo.id == playerId)?.score
-        const opponentInfo = roomInfo.players.find((playerInfo) => playerInfo.id != playerId)
+        const playerInfo = roomInfo.players.find((playerInfo) => playerInfo.id === playerId)
+        const opponentInfo = roomInfo.players.find((playerInfo) => playerInfo.id !== playerId)
 
-        if (typeof playerScore === "undefined" || !opponentInfo) {
+        if (typeof playerInfo === "undefined" || !opponentInfo) {
             return
         }
 
@@ -66,9 +73,21 @@ const GamePage = () => {
 
         //TODO: opponentChoice
 
-        setPlayerScore(playerScore)
+        setPlayerScore(playerInfo.score)
         setOpponentScore(opponentInfo.score)
+
+        setCurrentChoice(playerInfo.currentChoice)
     }, [roomInfo, playerId])
+
+    const handlePlayerChoice = (playerChoice: PlayerChoice) => {
+        if (!socket) {
+            return
+        }
+
+        socket.emit("room:choice", playerChoice)
+
+        setCurrentChoice(playerChoice)
+    }
 
     return (
         <>
@@ -92,30 +111,62 @@ const GamePage = () => {
                             </h2>
 
                             <div className="flex h-48 items-center justify-center gap-5 lg:justify-evenly">
-                                <div className="w-full max-w-[150px]">
-                                    {/* https://www.flaticon.com/free-icons/rock */}
-                                    <img
-                                        src={rockIcon}
-                                        alt="rock icon"
-                                    />
-                                    <p className="mt-2 text-2xl font-bold text-center">Rock</p>
-                                </div>
-                                <div className="w-full max-w-[150px]">
-                                    {/* https://www.flaticon.com/free-icons/paper */}
-                                    <img
-                                        src={paperIcon}
-                                        alt="paper icon"
-                                    />
-                                    <p className="mt-2 text-2xl font-bold text-center">Paper</p>
-                                </div>
-                                <div className="w-full max-w-[150px]">
-                                    {/* https://www.flaticon.com/free-icons/scissors */}
-                                    <img
-                                        src={scissorsIcon}
-                                        alt="scissors icon"
-                                    />
-                                    <p className="mt-2 text-2xl font-bold text-center">Scissors</p>
-                                </div>
+                                {(currentChoice === "NONE" || currentChoice === "ROCK") && (
+                                    <div
+                                        className="w-full max-w-[150px]"
+                                        onClick={() => {
+                                            if (currentChoice !== "NONE") {
+                                                return
+                                            }
+                                            handlePlayerChoice("ROCK")
+                                        }}
+                                    >
+                                        {/* https://www.flaticon.com/free-icons/rock */}
+                                        <img
+                                            src={rockIcon}
+                                            alt="rock icon"
+                                        />
+                                        <p className="mt-2 text-2xl font-bold text-center">Rock</p>
+                                    </div>
+                                )}
+
+                                {(currentChoice === "NONE" || currentChoice === "PAPER") && (
+                                    <div
+                                        className="w-full max-w-[150px]"
+                                        onClick={() => {
+                                            if (currentChoice !== "NONE") {
+                                                return
+                                            }
+                                            handlePlayerChoice("PAPER")
+                                        }}
+                                    >
+                                        {/* https://www.flaticon.com/free-icons/paper */}
+                                        <img
+                                            src={paperIcon}
+                                            alt="paper icon"
+                                        />
+                                        <p className="mt-2 text-2xl font-bold text-center">Paper</p>
+                                    </div>
+                                )}
+
+                                {(currentChoice === "NONE" || currentChoice === "SCISSORS") && (
+                                    <div
+                                        className="w-full max-w-[150px]"
+                                        onClick={() => {
+                                            if (currentChoice !== "NONE") {
+                                                return
+                                            }
+                                            handlePlayerChoice("SCISSORS")
+                                        }}
+                                    >
+                                        {/* https://www.flaticon.com/free-icons/scissors */}
+                                        <img
+                                            src={scissorsIcon}
+                                            alt="scissors icon"
+                                        />
+                                        <p className="mt-2 text-2xl font-bold text-center">Scissors</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
