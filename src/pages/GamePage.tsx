@@ -137,7 +137,7 @@ const GamePage = () => {
                             <div className="flex h-48 items-center justify-center gap-5 lg:justify-evenly">
                                 {(currentChoice === "NONE" || currentChoice === "ROCK") && (
                                     <div
-                                        className="w-full max-w-[150px]"
+                                        className="flex w-full h-52 flex-col justify-between max-w-[150px]"
                                         onClick={() => {
                                             if (currentChoice !== "NONE") {
                                                 return
@@ -150,13 +150,13 @@ const GamePage = () => {
                                             src={rockIcon}
                                             alt="rock icon"
                                         />
-                                        <p className="mt-2 text-2xl font-bold text-center">Rock</p>
+                                        <p className="text-xl font-bold text-center lg:text-2xl">Rock</p>
                                     </div>
                                 )}
 
                                 {(currentChoice === "NONE" || currentChoice === "PAPER") && (
                                     <div
-                                        className="w-full max-w-[150px]"
+                                        className="flex w-full h-52 flex-col justify-between max-w-[150px]"
                                         onClick={() => {
                                             if (currentChoice !== "NONE") {
                                                 return
@@ -169,13 +169,13 @@ const GamePage = () => {
                                             src={paperIcon}
                                             alt="paper icon"
                                         />
-                                        <p className="mt-2 text-2xl font-bold text-center">Paper</p>
+                                        <p className="text-xl font-bold text-center lg:text-2xl">Paper</p>
                                     </div>
                                 )}
 
                                 {(currentChoice === "NONE" || currentChoice === "SCISSORS") && (
                                     <div
-                                        className="w-full max-w-[150px]"
+                                        className="flex w-full h-52 flex-col justify-between max-w-[150px]"
                                         onClick={() => {
                                             if (currentChoice !== "NONE") {
                                                 return
@@ -188,7 +188,7 @@ const GamePage = () => {
                                             src={scissorsIcon}
                                             alt="scissors icon"
                                         />
-                                        <p className="mt-2 text-2xl font-bold text-center">Scissors</p>
+                                        <p className="text-xl font-bold text-center lg:text-2xl">Scissors</p>
                                     </div>
                                 )}
                             </div>
