@@ -3,11 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Socket, io } from "socket.io-client"
-import { RoomInfoDTO } from "../dtos/RoomInfo.dto"
-import paperIcon from "../img/icons/paper-icon.svg"
-import rockIcon from "../img/icons/rock-icon.svg"
-import scissorsIcon from "../img/icons/scissors-icon.svg"
-import { PlayerChoice } from "../types/PlayerChoice.type"
+import { RoomInfoDTO } from "../../dtos/RoomInfo.dto"
+import paperIcon from "../../img/icons/paper-icon.svg"
+import rockIcon from "../../img/icons/rock-icon.svg"
+import scissorsIcon from "../../img/icons/scissors-icon.svg"
+import { PlayerChoice } from "../../types/PlayerChoice.type"
+import WaitingForOpponentPage from "./WaitingForOpponentPage"
 
 const GamePage = () => {
     const { roomId } = useParams()
@@ -79,8 +80,8 @@ const GamePage = () => {
         if (playerScore !== playerInfo.score || opponentScore !== opponentInfo.score) {
             setShowResults(true)
 
-        setPlayerScore(playerInfo.score)
-        setOpponentScore(opponentInfo.score)
+            setPlayerScore(playerInfo.score)
+            setOpponentScore(opponentInfo.score)
             setTimeout(() => {
                 setOpponentChoice(opponentInfo.currentChoice)
                 setCurrentChoice(playerInfo.currentChoice)
@@ -109,7 +110,7 @@ const GamePage = () => {
     return (
         <>
             {!isOpponentConnected ? (
-                <h1>Waiting for opponent {isOpponentConnected}</h1>
+                <WaitingForOpponentPage />
             ) : (
                 <div className="flex flex-col h-screen pt-8 bg-gradient-to-r from-purple-700 to-purple-600 text-white">
                     <h1 className="text-4xl text-center font-bold drop-shadow-lg">Round 1</h1>

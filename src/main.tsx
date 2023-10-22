@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
-import GamePage from "./pages/GamePage.tsx"
+import GamePage from "./pages/GamePage/GamePage.tsx"
 import MainPage from "./pages/MainPage.tsx"
 import "./style/index.css"
 
