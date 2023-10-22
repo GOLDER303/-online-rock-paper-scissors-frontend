@@ -25,6 +25,8 @@ const GamePage = () => {
     const [opponentChoice, setOpponentChoice] = useState<PlayerChoice>("NONE")
     const [currentChoice, setCurrentChoice] = useState<PlayerChoice>("NONE")
 
+    const [showResults, setShowResults] = useState<boolean>(false)
+
     useEffect(() => {
         const onRoomJoined = (payload: { playerId: number }) => {
             setPlayerId(payload.playerId)
@@ -74,13 +76,24 @@ const GamePage = () => {
 
         setIsOpponentConnected(opponentInfo.connected)
 
-        //TODO: opponentChoice
+        if (playerScore !== playerInfo.score || opponentScore !== opponentInfo.score) {
+            setShowResults(true)
 
         setPlayerScore(playerInfo.score)
         setOpponentScore(opponentInfo.score)
+            setTimeout(() => {
+                setOpponentChoice(opponentInfo.currentChoice)
+                setCurrentChoice(playerInfo.currentChoice)
+
+                setShowResults(false)
+            }, 3500)
+
+            return
+        }
 
         setOpponentChoice(opponentInfo.currentChoice)
         setCurrentChoice(playerInfo.currentChoice)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [roomInfo, playerId])
 
     const handlePlayerChoice = (playerChoice: PlayerChoice) => {
@@ -108,6 +121,8 @@ const GamePage = () => {
                             </h2>
 
                             <div className="flex h-52 flex-col justify-between items-center">
+                                {!showResults ? (
+                                    <>
                                         {opponentChoice === "NONE" ? (
                                             <>
                                                 <div className="animate-spin rounded-full h-36 w-36 border-t-4 border-orange-300"></div>
@@ -125,6 +140,12 @@ const GamePage = () => {
                                                     Opponent made a choice
                                                 </h3>
                                             </>
+                                        )}
+                                    </>
+                                ) : (
+                                    <h3 className="text-xl font-bold text-center lg:text-2xl">
+                                        Opponent choice: {opponentChoice}
+                                    </h3>
                                 )}
                             </div>
                         </div>
