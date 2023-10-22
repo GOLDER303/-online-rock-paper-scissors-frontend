@@ -1,3 +1,5 @@
+import { faCheck } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Socket, io } from "socket.io-client"
@@ -20,6 +22,7 @@ const GamePage = () => {
 
     const [isOpponentConnected, setIsOpponentConnected] = useState<boolean>(false)
 
+    const [opponentChoice, setOpponentChoice] = useState<PlayerChoice>("NONE")
     const [currentChoice, setCurrentChoice] = useState<PlayerChoice>("NONE")
 
     useEffect(() => {
@@ -76,6 +79,7 @@ const GamePage = () => {
         setPlayerScore(playerInfo.score)
         setOpponentScore(opponentInfo.score)
 
+        setOpponentChoice(opponentInfo.currentChoice)
         setCurrentChoice(playerInfo.currentChoice)
     }, [roomInfo, playerId])
 
@@ -102,7 +106,27 @@ const GamePage = () => {
                             <h2 className="text-center text-2xl font-bold lg:mb-32 lg:text-3xl">
                                 Opponent's Score: {opponentScore}
                             </h2>
-                            <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-orange-300 lg:h-48 lg:w-48"></div>
+
+                            <div className="flex h-52 flex-col justify-between items-center">
+                                        {opponentChoice === "NONE" ? (
+                                            <>
+                                                <div className="animate-spin rounded-full h-36 w-36 border-t-4 border-orange-300"></div>
+                                                <h3 className="text-xl font-bold text-center lg:text-2xl">
+                                                    Waiting for opponent choice
+                                                </h3>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <FontAwesomeIcon
+                                                    icon={faCheck}
+                                                    className="w-28 h-28 lg:w-32 lg:h-32"
+                                                />
+                                                <h3 className="text-xl font-bold text-center lg:text-2xl">
+                                                    Opponent made a choice
+                                                </h3>
+                                            </>
+                                )}
+                            </div>
                         </div>
 
                         <div className="flex flex-col justify-evenly flex-1 lg:justify-center">
