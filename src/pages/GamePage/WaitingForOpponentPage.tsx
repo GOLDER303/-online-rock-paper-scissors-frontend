@@ -16,7 +16,7 @@ const WaitingForOpponentPage = () => {
             </h1>
 
             <div
-                className="group relative mb-8 py-3 px-8 border-2 border-white rounded-lg cursor-pointer shadow-lg lg:px-16"
+                className="group relative mb-8 py-3 px-8 border-2 border-white rounded-lg cursor-pointer shadow-lg lg:px-16 lg:py-5"
                 onClick={handleRoomUrlCopy}
             >
                 <div className="absolute top-0 left-0 w-full h-full bg-white opacity-25 group-hover:opacity-20"></div>
