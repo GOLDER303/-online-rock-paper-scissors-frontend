@@ -23,7 +23,10 @@ const GamePage = () => {
 
     const [isOpponentConnected, setIsOpponentConnected] = useState<boolean>(false)
 
+    const [roundNumber, setRoundNumber] = useState<number>(0)
+
     const [opponentChoice, setOpponentChoice] = useState<PlayerChoice>("NONE")
+    const [opponentPreviousChoice, setOpponentPreviousChoice] = useState<PlayerChoice>("NONE")
     const [currentChoice, setCurrentChoice] = useState<PlayerChoice>("NONE")
 
     const [showResults, setShowResults] = useState<boolean>(false)
@@ -77,7 +80,11 @@ const GamePage = () => {
 
         setIsOpponentConnected(opponentInfo.connected)
 
-        if (playerScore !== playerInfo.score || opponentScore !== opponentInfo.score) {
+        setOpponentPreviousChoice(opponentInfo.previousChoice)
+
+        setRoundNumber(roomInfo.round)
+
+        if (roundNumber !== roomInfo.round) {
             setShowResults(true)
 
             setPlayerScore(playerInfo.score)
@@ -105,6 +112,19 @@ const GamePage = () => {
         socket.emit("room:choice", playerChoice)
 
         setCurrentChoice(playerChoice)
+    }
+
+    const getIconFromName = (choice: PlayerChoice) => {
+        switch (choice) {
+            case "ROCK":
+                return rockIcon
+            case "PAPER":
+                return paperIcon
+            case "SCISSORS":
+                return scissorsIcon
+            default:
+                return undefined
+        }
     }
 
     return (
@@ -144,9 +164,15 @@ const GamePage = () => {
                                         )}
                                     </>
                                 ) : (
-                                    <h3 className="text-xl font-bold text-center lg:text-2xl">
-                                        Opponent choice: {opponentChoice}
-                                    </h3>
+                                    <div className="flex w-1/3 h-52 flex-col justify-between">
+                                        <img
+                                            src={getIconFromName(opponentPreviousChoice)}
+                                            alt={`${opponentPreviousChoice.toLocaleLowerCase()} icon`}
+                                        />
+                                        <p className="text-xl font-bold text-center lg:text-2xl">
+                                            {opponentPreviousChoice.toLowerCase()}
+                                        </p>
+                                    </div>
                                 )}
                             </div>
                         </div>
