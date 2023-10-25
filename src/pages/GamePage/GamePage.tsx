@@ -141,13 +141,13 @@ const GamePage = () => {
                                 Opponent's Score: {opponentScore}
                             </h2>
 
-                            <div className="flex h-52 flex-col justify-between items-center">
+                            <div className="flex w-full flex-col justify-between items-center">
                                 {!showResults ? (
                                     <>
                                         {opponentChoice === "NONE" ? (
                                             <>
                                                 <div className="animate-spin rounded-full h-36 w-36 border-t-4 border-orange-300"></div>
-                                                <h3 className="text-xl font-bold text-center lg:text-2xl">
+                                                <h3 className="mt-4 text-xl font-bold text-center lg:mt-6 lg:text-2xl">
                                                     Waiting for opponent choice
                                                 </h3>
                                             </>
@@ -155,21 +155,21 @@ const GamePage = () => {
                                             <>
                                                 <FontAwesomeIcon
                                                     icon={faCheck}
-                                                    className="w-28 h-28 lg:w-32 lg:h-32"
+                                                    className="w-1/4 h-auto max-w-[150px] max-h-[150px]"
                                                 />
-                                                <h3 className="text-xl font-bold text-center lg:text-2xl">
+                                                <h3 className="mt-4 text-xl font-bold text-center lg:mt-6 lg:text-2xl">
                                                     Opponent made a choice
                                                 </h3>
                                             </>
                                         )}
                                     </>
                                 ) : (
-                                    <div className="flex w-1/3 h-52 flex-col justify-between">
+                                    <div className="flex w-1/4 flex-col justify-between max-w-[130px] lg:max-w-[150px] lg:h-52">
                                         <img
                                             src={getIconFromName(opponentPreviousChoice)}
                                             alt={`${opponentPreviousChoice.toLocaleLowerCase()} icon`}
                                         />
-                                        <p className="text-xl font-bold text-center lg:text-2xl">
+                                        <p className="mt-4 text-xl font-bold text-center lg:mt-6 lg:text-2xl">
                                             {opponentPreviousChoice.toLowerCase()}
                                         </p>
                                     </div>
@@ -182,10 +182,10 @@ const GamePage = () => {
                                 Your Score: {playerScore}
                             </h2>
 
-                            <div className="flex h-48 items-center justify-center gap-5 lg:justify-evenly">
+                            <div className="flex items-center justify-evenly lg:justify-evenly">
                                 {(currentChoice === "NONE" || currentChoice === "ROCK") && (
                                     <div
-                                        className="flex w-full h-52 flex-col justify-between max-w-[150px]"
+                                        className="flex w-1/4  flex-col justify-between max-w-[130px] lg:max-w-[150px]"
                                         onClick={() => {
                                             if (currentChoice !== "NONE") {
                                                 return
@@ -197,14 +197,15 @@ const GamePage = () => {
                                         <img
                                             src={rockIcon}
                                             alt="rock icon"
+                                            className="w-fit"
                                         />
-                                        <p className="text-xl font-bold text-center lg:text-2xl">Rock</p>
+                                        <p className="mt-4 text-xl font-bold text-center lg:mt-6 lg:text-2xl">Rock</p>
                                     </div>
                                 )}
 
                                 {(currentChoice === "NONE" || currentChoice === "PAPER") && (
                                     <div
-                                        className="flex w-full h-52 flex-col justify-between max-w-[150px]"
+                                        className="flex w-1/4 flex-col justify-between max-w-[130px] lg:max-w-[150px]"
                                         onClick={() => {
                                             if (currentChoice !== "NONE") {
                                                 return
@@ -217,13 +218,13 @@ const GamePage = () => {
                                             src={paperIcon}
                                             alt="paper icon"
                                         />
-                                        <p className="text-xl font-bold text-center lg:text-2xl">Paper</p>
+                                        <p className="mt-4 text-xl font-bold text-center lg:mt-6 lg:text-2xl">Paper</p>
                                     </div>
                                 )}
 
                                 {(currentChoice === "NONE" || currentChoice === "SCISSORS") && (
                                     <div
-                                        className="flex w-full h-52 flex-col justify-between max-w-[150px]"
+                                        className="flex w-1/4 flex-col justify-between max-w-[130px] lg:max-w-[150px]"
                                         onClick={() => {
                                             if (currentChoice !== "NONE") {
                                                 return
@@ -236,7 +237,9 @@ const GamePage = () => {
                                             src={scissorsIcon}
                                             alt="scissors icon"
                                         />
-                                        <p className="text-xl font-bold text-center lg:text-2xl">Scissors</p>
+                                        <p className="mt-4 text-xl font-bold text-center lg:mt-6 lg:text-2xl">
+                                            Scissors
+                                        </p>
                                     </div>
                                 )}
                             </div>
