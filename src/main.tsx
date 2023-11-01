@@ -1,6 +1,8 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
+import { ErrorBoundary } from "react-error-boundary"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
+import ErrorPage from "./pages/ErrorPage.tsx"
 import GamePage from "./pages/GamePage/GamePage.tsx"
 import MainPage from "./pages/MainPage.tsx"
 import "./style/index.css"
@@ -18,6 +20,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <ErrorBoundary FallbackComponent={ErrorPage}>
+            <RouterProvider router={router} />
+        </ErrorBoundary>
     </React.StrictMode>
 )
