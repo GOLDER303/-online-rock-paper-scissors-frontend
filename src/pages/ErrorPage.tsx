@@ -1,10 +1,7 @@
-import { FallbackProps } from "react-error-boundary"
-
-const ErrorPage: React.FC<FallbackProps> = ({ error, resetErrorBoundary }) => {
+const ErrorPage: React.FC = () => {
     return (
         <>
-            <h1>{error}</h1>
-            <button onClick={resetErrorBoundary}>Reset</button>
+            <h1>Error</h1>
         </>
     )
 }
